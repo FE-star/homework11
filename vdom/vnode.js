@@ -1,40 +1,31 @@
-/** 调用示例：
-  var vdom = new VNode("div", {className: 'container'}, [
-    new VNode("div", {className: 'container2'}),
-    new VNode("div", {className: 'container3'}),
-  ]);
+/*
+简单实现incremental-dom中的关键api。不考虑element的情况，直接转换为jsonDom
+返回结果示例
+{"tagName":"div","children":[{"tagName":"p","text":"1"}],"text":"2"}
 */
 
- /** 结果示例：
-{
-	"tagName": "div",
-	"props": {
-		"className": "container"
-	},
-	"children": [{
-		"tagName": "div",
-		"props": {
-			"className": "container2"
-		},
-		"children": [],
-		"text": ""
-	}, {
-		"tagName": "div",
-		"props": {
-			"className": "container3"
-		},
-		"children": [],
-		"text": ""
-	}],
-	"text": ""
+let currentNode = null;
+let currentParent = null;
+function elementOpen(tagName) {
+  // TODO
 }
- */
-class VNode {
-  constructor() {
-    // TODO
-  };
-  render () {
-    // TODO
-  }
+
+function text(textContent) {
+  // TODO
 }
-module.exports = VNode;
+
+function elementEnd(tagName) {
+  // TODO
+}
+
+function parsent() {
+  elementOpen('div')
+  elementOpen('p')
+  text('1')
+  elementEnd('p')
+  text('2')
+  elementEnd('div')
+  return currentNode
+}
+
+module.exports = parsent;
