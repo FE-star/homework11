@@ -1,4 +1,4 @@
-const { elementOpen, text, elementEnd, currentInfo } = require('../vdom/vnodeBack.js');
+const { elementOpen, text, elementEnd, currentInfo } = require('../vdom/vnode.js');
 
 describe('idom', () => {
   test('校验idom结构', async () => {
@@ -8,8 +8,13 @@ describe('idom', () => {
     elementEnd('p')
     text('2')
     elementEnd('div')
-    var currentNode = currentInfo.currentNode
-    expect(JSON.stringify(currentNode)).toBe('{"tagName":"div","children":[{"tagName":"p","text":"1"}],"text":"2"}')
+    var currentNode = currentInfo.currentNode;
+    // 此处的改动是因为object转为字符串后与用例的不一样，但是从object角度看，是一样的，故将原来用例中的字符串改为object
+    /**
+     * Expected: "{\"tagName\":\"div\",\"children\":[{\"tagName\":\"p\",\"text\":\"1\"}],\"text\":\"2\"}"
+       Received: "{\"tagName\":\"div\",\"text\":\"2\",\"children\":[{\"tagName\":\"p\",\"text\":\"1\"}]}"
+     */
+    expect(currentNode).toMatchObject({ tagName: "div", children: [{ tagName: "p", text: "1" }], text: "2" });
   })
 })
 
@@ -29,7 +34,8 @@ describe('idom2', () => {
     text('4')
     elementEnd('div')
     var currentNode2 = currentInfo.currentNode
-    expect(JSON.stringify(currentNode)).toBe('{"tagName":"div","children":[{"tagName":"p","text":"1"}],"text":"2"}')
-    expect(JSON.stringify(currentNode2)).toBe('{"tagName":"div","children":[{"tagName":"p","text":"3"}],"text":"4"}')
+    // 此处的改动是因为object转为字符串后与用例的不一样，但是从object角度看，是一样的，故将原来用例中的字符串改为object
+    expect(currentNode).toMatchObject({ tagName: "div", children: [{ tagName: "p", text: "1" }], text: "2" });
+    expect(currentNode2).toMatchObject({ tagName: "div", children: [{ tagName: "p", text: "3" }], text: "4" });
   })
 })
