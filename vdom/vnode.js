@@ -6,18 +6,48 @@
 
 var currentInfo = {
 	currentNode: null,
-	currentParent: null
+	currentParent: null,
 }
+let fragment = null;
 function elementOpen(tagName) {
-	// TODO
+	const tagNode = { tagName, text: '' };
+	// currentInfo.currentNode = curNode;
+	if (!fragment) {
+		currentInfo.currentNode = tagNode;
+		fragment = tagNode;
+	}
+	if (!currentInfo.currentParent || currentInfo.currentParent.length <= 0) {
+		currentInfo.currentParent = [tagNode];
+	} else {
+		const parentLength = currentInfo.currentParent.length;
+		if (parentLength > 0) {
+			const tagParent = currentInfo.currentParent[parentLength - 1];
+			if (!tagParent.children) {
+				tagParent['children'] = [tagNode];
+			} else {
+				tagParent.children.push(tagNode);
+			}
+			currentInfo.currentParent.push(tagNode);
+			currentInfo.currentNode = tagNode;
+		}
+	}
 }
 
 function text(textContent) {
-	// TODO
+	currentInfo.currentNode.text = textContent;
 }
 
 function elementEnd(tagName) {
-	// TODO
+	if (currentInfo.currentNode.tagName !== tagName) {
+		throw new Error('tag is not match');
+	}
+	currentInfo.currentParent.pop();
+	if (currentInfo.currentParent.length <= 0) {
+		currentInfo.currentNode = fragment;
+		fragment = null;
+		return;
+	}
+	currentInfo.currentNode = currentInfo.currentParent[currentInfo.currentParent.length - 1];
 }
 module.exports = {
 	elementOpen,
