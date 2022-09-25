@@ -1,4 +1,4 @@
-const { elementOpen, text, elementEnd, currentInfo } = require('../vdom/vnodeBack.js');
+const { elementOpen, text, elementEnd, currentInfo } = require('../vdom/vnode.js');
 
 describe('idom', () => {
   test('校验idom结构', async () => {
@@ -19,7 +19,6 @@ describe('idom2', () => {
     elementOpen('p')
     text('1')
     elementEnd('p')
-    text('2')
     elementEnd('div')
     var currentNode = currentInfo.currentNode
     elementOpen('div')
