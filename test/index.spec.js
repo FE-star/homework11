@@ -1,4 +1,4 @@
-const { elementOpen, text, elementEnd, currentInfo } = require('../vdom/vnodeBack.js');
+const { elementOpen, text, elementEnd, currentInfo } = require('../vdom/vnode.js');
 
 describe('idom', () => {
   test('校验idom结构', async () => {
