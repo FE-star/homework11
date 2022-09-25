@@ -9,15 +9,41 @@ var currentInfo = {
 	currentParent: null
 }
 function elementOpen(tagName) {
-	// TODO
+	const { currentNode, currentParent } = currentInfo;
+	if (currentParent === null) {
+		currentInfo.currentNode = { tagName };
+		currentInfo.currentParent = { isRoot: true }
+	} else {
+		if (!currentNode.children) {
+			currentNode.children = [];
+		}
+		const thisNode = { tagName };
+		currentNode.children.push(thisNode);
+		currentInfo.currentParent = {
+			currentNode,
+			currentParent,
+		};
+		currentInfo.currentNode = thisNode;
+	}
 }
 
 function text(textContent) {
-	// TODO
+	const { currentNode } = currentInfo;
+	if (currentNode) {
+		currentNode.text = textContent;
+	}
 }
 
 function elementEnd(tagName) {
-	// TODO
+	const { currentParent, currentNode } = currentInfo;
+	if (currentNode && currentNode.tagName === tagName) {
+		if (!currentParent.isRoot) {
+			currentInfo.currentNode = currentParent.currentNode;
+			currentInfo.currentParent = currentParent.currentParent;
+		} else {
+			currentInfo.currentParent = null;
+		}
+	}
 }
 module.exports = {
 	elementOpen,
