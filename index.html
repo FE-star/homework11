@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="./incremental-dom.js"></script>
+    <script>
+      const {
+        elementOpen,
+        text,
+        elementClose,
+        patch,
+        currentElement,
+        currentPointer
+      } = window.IncrementalDOM
+
+      function renderPart() {
+        const element = elementOpen('div')
+        elementOpen('p')
+        text('1')
+        elementClose('p')
+        text('2')
+        elementClose('div')
+        console.log(element, currentElement(), currentPointer())
+        elementOpen('div')
+        elementOpen('p')
+        text('3')
+        elementClose('p')
+        text('4')
+        elementClose('div')
+        console.log(element, currentElement(), currentPointer())
+      }
+
+      patch(document.getElementById('app'), renderPart)
+    </script>
+  </body>
+</html>
