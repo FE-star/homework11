@@ -1,11 +1,13 @@
 /*
-简单实现incremental-dom中的关键api。不考虑element的情况，直接转换为jsonDom
+简单实现incremental-dom中的关键api, 需要考虑同时存在多个vdom的情况。不考虑element的情况，直接转换为jsonDom
 返回结果示例
 {"tagName":"div","children":[{"tagName":"p","text":"1"}],"text":"2"}
 */
 
-let currentNode = null;
-let currentParent = null;
+var currentInfo = {
+	currentNode: null,
+	currentParent: null
+}
 function elementOpen(tagName) {
   // TODO
   const node = {

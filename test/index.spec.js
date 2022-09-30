@@ -1,18 +1,35 @@
-const parsent = require('../vdom/vnode.js');
-// const VNode = require('../vdom/vnodeBack.js');
-// describe('vdom', () => {
-//   test('校验vdom结构', async () => {
-//     var vdom = new VNode("div", {className: 'container'}, [
-//       new VNode("div", {className: 'container2'}),
-//       new VNode("div", {className: 'container3'}),
-//     ]);
-//     expect(JSON.stringify(vdom)).toBe('{"tagName":"div","props":{"className":"container"},"children":[{"tagName":"div","props":{"className":"container2"},"children":[],"text":""},{"tagName":"div","props":{"className":"container3"},"children":[],"text":""}],"text":""}')
-//   })
-// })
-const res = '{"tagName":"div","children":[{"tagName":"div","text":"1"}],"text":"2"}'
+const { elementOpen, text, elementEnd, currentInfo } = require('../vdom/vnodeBack.js');
+
 describe('idom', () => {
   test('校验idom结构', async () => {
-    const vdom = parsent()
-    expect(JSON.stringify(vdom)).toBe('{"tagName":"div","children":[{"tagName":"p","text":"1"}],"text":"2"}')
+    elementOpen('div')
+    elementOpen('p')
+    text('1')
+    elementEnd('p')
+    text('2')
+    elementEnd('div')
+    var currentNode = currentInfo.currentNode
+    expect(JSON.stringify(currentNode)).toBe('{"tagName":"div","children":[{"tagName":"p","text":"1"}],"text":"2"}')
+  })
+})
+
+describe('idom2', () => {
+  test('重复调用的时候，生成结果独立互不影响', async () => {
+    elementOpen('div')
+    elementOpen('p')
+    text('1')
+    elementEnd('p')
+    text('2')
+    elementEnd('div')
+    var currentNode = currentInfo.currentNode
+    elementOpen('div')
+    elementOpen('p')
+    text('3')
+    elementEnd('p')
+    text('4')
+    elementEnd('div')
+    var currentNode2 = currentInfo.currentNode
+    expect(JSON.stringify(currentNode)).toBe('{"tagName":"div","children":[{"tagName":"p","text":"1"}],"text":"2"}')
+    expect(JSON.stringify(currentNode2)).toBe('{"tagName":"div","children":[{"tagName":"p","text":"3"}],"text":"4"}')
   })
 })
