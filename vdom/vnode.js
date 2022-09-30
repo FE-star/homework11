@@ -15,10 +15,7 @@ function elementOpen(tagName) {
     parent: currentParent,
     node,
   }
-  currentNode = {
-    ...currentNode|| {},
-    ...node
-  }
+  currentNode = currentParent.node
 }
 
 function text(textContent) {
@@ -28,29 +25,25 @@ function text(textContent) {
 
 function elementEnd(tagName) {
   // TODO
+  const node = currentNode;
+  if (node.tagName !== tagName) return;
+
   if (currentParent.parent) {
-    currentNode = {
-      children: [...(currentNode.children || []), currentNode]
+    currentParent = {
+      ...currentParent.parent
     }
-  } else {
-    currentNode = {
-      ...currentParent.node,
-      ...currentNode
-    }
-  }
-  currentParent = {
-    ...currentParent.parent || {}
+    currentNode = currentParent.node
+    currentNode.children = currentNode.children ? currentNode.children.concat(node) : [node]
   }
 }
 
 function parsent() {
   elementOpen('div')
-  elementOpen('p')-
+  elementOpen('p')
   text('1')
   elementEnd('p')
   text('2')
   elementEnd('div')
   return currentNode
 }
-// console.log(parsent())
 module.exports = parsent;
