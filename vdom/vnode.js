@@ -46,4 +46,5 @@ function parsent() {
   elementEnd('div')
   return currentNode
 }
+
 module.exports = parsent;
