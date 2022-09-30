@@ -8,24 +8,49 @@ let currentNode = null;
 let currentParent = null;
 function elementOpen(tagName) {
   // TODO
+  const node = {
+    tagName,
+  }
+  currentParent = {
+    parent: currentParent,
+    node,
+  }
+  currentNode = {
+    ...currentNode|| {},
+    ...node
+  }
 }
 
 function text(textContent) {
   // TODO
+  currentNode.text = textContent
 }
 
 function elementEnd(tagName) {
   // TODO
+  if (currentParent.parent) {
+    currentNode = {
+      children: [...(currentNode.children || []), currentNode]
+    }
+  } else {
+    currentNode = {
+      ...currentParent.node,
+      ...currentNode
+    }
+  }
+  currentParent = {
+    ...currentParent.parent || {}
+  }
 }
 
 function parsent() {
   elementOpen('div')
-  elementOpen('p')
+  elementOpen('p')-
   text('1')
   elementEnd('p')
   text('2')
   elementEnd('div')
   return currentNode
 }
-
+// console.log(parsent())
 module.exports = parsent;
