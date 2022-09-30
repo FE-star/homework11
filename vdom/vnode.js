@@ -9,19 +9,44 @@ var currentInfo = {
 	currentParent: null
 }
 function elementOpen(tagName) {
-	// TODO
+  // TODO
+  const node = {
+    tagName,
+  }
+  currentParent = {
+    parent: currentParent,
+    node,
+  }
+  currentNode = currentParent.node
 }
 
 function text(textContent) {
-	// TODO
+  // TODO
+  currentNode.text = textContent
 }
 
 function elementEnd(tagName) {
-	// TODO
+  // TODO
+  const node = currentNode;
+  if (node.tagName !== tagName) return;
+
+  if (currentParent.parent) {
+    currentParent = {
+      ...currentParent.parent
+    }
+    currentNode = currentParent.node
+    currentNode.children = currentNode.children ? currentNode.children.concat(node) : [node]
+  }
 }
-module.exports = {
-	elementOpen,
-	text,
-	elementEnd,
-	currentInfo
-};
+
+function parsent() {
+  elementOpen('div')
+  elementOpen('p')
+  text('1')
+  elementEnd('p')
+  text('2')
+  elementEnd('div')
+  return currentNode
+}
+
+module.exports = parsent;
