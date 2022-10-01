@@ -5,23 +5,56 @@
 */
 
 var currentInfo = {
-	currentNode: null,
-	currentParent: null
+  currentNode: null,
+  currentParent: null
+};
+var stack = [];
+
+function createNode(tagName) {
+  var newNode = {
+    tagName
+  };
+
+  if (tagName === "div") {
+    return {
+      ...newNode,
+      children: []
+    };
+  }
+
+  return newNode;
 }
+
 function elementOpen(tagName) {
-	// TODO
+  var newNode = createNode(tagName);
+
+  if (!stack.length) {
+    currentInfo.currentNode = newNode;
+    stack.push(newNode);
+  } else {
+    // peek last element
+    var current = stack[stack.length - 1];
+
+    if ("children" in current) {
+      current.children.push(newNode);
+    }
+
+    stack.push(newNode);
+  }
 }
 
 function text(textContent) {
-	// TODO
+  var current = stack[stack.length - 1];
+  current.text = textContent;
 }
 
 function elementEnd(tagName) {
-	// TODO
+  var last = stack[stack.length - 1];
+  if (tagName === last.tagName) stack.pop();
 }
 module.exports = {
-	elementOpen,
-	text,
-	elementEnd,
-	currentInfo
+  elementOpen,
+  text,
+  elementEnd,
+  currentInfo
 };
