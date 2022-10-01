@@ -4,24 +4,19 @@
 {"tagName":"div","children":[{"tagName":"p","text":"1"}],"text":"2"}
 */
 
-var currentInfo = {
-	currentNode: null,
-	currentParent: null
-}
-function elementOpen(tagName) {
-	// TODO
-}
-
-function text(textContent) {
-	// TODO
-}
-
-function elementEnd(tagName) {
-	// TODO
-}
-module.exports = {
-	elementOpen,
-	text,
-	elementEnd,
-	currentInfo
+export const currentInfo = {
+  currentNode: null,
+  currentParent: null,
 };
+
+export function elementOpen(tagName) {
+  // TODO
+}
+
+export function text(textContent) {
+  // TODO
+}
+
+export function elementEnd(tagName) {
+  // TODO
+}
