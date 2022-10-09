@@ -5,23 +5,44 @@
 */
 
 var currentInfo = {
-	currentNode: null,
-	currentParent: null
-}
+  currentNode: null,
+  currentParent: [],
+};
+
 function elementOpen(tagName) {
-	// TODO
+	currentInfo.currentNode = null;
+  currentInfo.currentParent.push({
+    tagName,
+  });
 }
 
 function text(textContent) {
-	// TODO
+  currentInfo.currentParent[currentInfo.currentParent.length - 1].text =
+    textContent;
 }
 
 function elementEnd(tagName) {
-	// TODO
+  const { currentParent } = currentInfo;
+  let tempNode = currentParent.pop();
+	let length = currentInfo.currentParent.length
+	let nextParent = currentParent[length - 1]
+  if (tempNode.tagName === tagName) {
+		if(length) {
+			nextParent.children = nextParent.children || []
+			nextParent.children.push(
+				tempNode
+			);
+		} else {
+			currentInfo.currentNode = tempNode;
+		}
+  } else {
+    // TODO
+  }
 }
+
 module.exports = {
-	elementOpen,
-	text,
-	elementEnd,
-	currentInfo
+  elementOpen,
+  text,
+  elementEnd,
+  currentInfo,
 };
