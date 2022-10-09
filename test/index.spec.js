@@ -1,4 +1,4 @@
-const { elementOpen, text, elementEnd, currentInfo } = require('../vdom/vnodeBack.js');
+const { elementOpen, text, elementEnd, currentInfo } = require('../vdom/vnode.js');
 
 describe('idom', () => {
   test('校验idom结构', async () => {
@@ -10,6 +10,22 @@ describe('idom', () => {
     elementEnd('div')
     var currentNode = currentInfo.currentNode
     expect(JSON.stringify(currentNode)).toBe('{"tagName":"div","children":[{"tagName":"p","text":"1"}],"text":"2"}')
+  })
+})
+
+describe('idom', () => {
+  test('校验多层子节点的idom结构', async () => {
+    elementOpen('div')
+    elementOpen('p')
+    text('1')
+    elementEnd('p')
+    elementOpen('p')
+    text('1')
+    elementEnd('p')
+    text('2')
+    elementEnd('div')
+    var currentNode = currentInfo.currentNode
+    expect(JSON.stringify(currentNode)).toBe('{"tagName":"div","children":[{"tagName":"p","text":"1"},{"tagName":"p","text":"1"}],"text":"2"}')
   })
 })
 
